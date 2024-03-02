@@ -10,13 +10,16 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    luna.cpp
+    luna.cpp \
+    sethomepage.cpp
 
 HEADERS += \
-    luna.h
+    luna.h \
+    sethomepage.h
 
 FORMS += \
-    luna.ui
+    luna.ui \
+    sethomepage.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

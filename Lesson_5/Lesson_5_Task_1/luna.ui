@@ -75,6 +75,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="b_reload">
+        <property name="text">
+         <string>Reload</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLineEdit" name="l_url"/>
       </item>
      </layout>
