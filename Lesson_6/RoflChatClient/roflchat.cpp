@@ -47,6 +47,8 @@ void RoflChat::onConnect()
     ui->stackedWidget->setCurrentIndex(Screen::Chat);
 
     m_socket->write(generateJson("nck", ui->e_login->text()));
+
+    // { "type": "nck", "value": "DonJuan" }
 }
 
 void RoflChat::onDisconnect()

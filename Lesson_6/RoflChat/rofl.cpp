@@ -32,11 +32,16 @@ void Rofl::onClientSend()
     QByteArray data = client->readAll();
 
     clientCmd action = parseJson(data);
+
+    // { "type": "msg", "value": "Hello!" }
+    // { "type": "nck", "value": "DonJuan" }
+    //
+    //
+
     if (action.type == "msg")
         sendToAll(m_clients[client] + ": " + action.value.toLocal8Bit());
-    if (action.type == "nck") {
+    if (action.type == "nck")
         m_clients[client] = action.value.toLocal8Bit();
-    }
 }
 
 void Rofl::sendToAll(QByteArray message)
