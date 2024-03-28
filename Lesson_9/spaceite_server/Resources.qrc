@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/misc/playerPos.txt</file>
+        <file>Resources/misc/map.txt</file>
+    </qresource>
+</RCC>
