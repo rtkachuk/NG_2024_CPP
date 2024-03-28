@@ -18,9 +18,9 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QPushButton" name="b_select">
+       <widget class="QPushButton" name="b_add">
         <property name="text">
-         <string>Set Song</string>
+         <string>Add Song</string>
         </property>
        </widget>
       </item>
@@ -131,7 +131,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="listWidget"/>
+       <widget class="QListWidget" name="lw_playlist"/>
       </item>
      </layout>
     </item>

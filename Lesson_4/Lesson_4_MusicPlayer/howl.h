@@ -26,12 +26,15 @@ private:
     QMediaPlayer *m_player;
     QAudioOutput *m_audioOutput;
 
+    QStringList m_songs;
+
 private slots:
     void playPause();
     void next();
     void previous();
     void updatePosition(qint64 pos);
-    void setSong();
+    void addSong();
+    void setCurrentSong(QString path);
     void updateVolume(float volume);
 };
 #endif // HOWL_H
