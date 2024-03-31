@@ -43,6 +43,12 @@ void Client::readyRead()
 
     QJsonObject json = QJsonDocument::fromJson(m_socket->readAll()).object();
     QString map = json.value("addition").toString();
+    parseMap(map);
+}
+
+
+void Client::parseMap(QString map)
+{
     qDebug() << map;
 
     QStringList rawMap = map.split(",");

@@ -28,6 +28,7 @@ private slots:
     void connectedToHost();
     void readyRead();
     void renderMap();
+    void parseMap(QString);
 
 private:
     QPixmap getImage(char element);
