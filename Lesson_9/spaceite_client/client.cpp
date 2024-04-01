@@ -38,16 +38,26 @@ void Client::connectedToHost()
 
 void Client::readyRead()
 {
-    // Ugly map only parser
-    //
+    Map map;
 
-    QJsonObject json = QJsonDocument::fromJson(m_socket->readAll()).object();
-    QString map = json.value("addition").toString();
-    qDebug() << map;
-
-    QStringList rawMap = map.split(",");
-
+    map.downloadedMap = downloadMap();
+    map.rawMap = map.downloadedMap.split(",");
     m_map.clear();
+
+    saveMap(map.rawMap);
+    renderMap();
+}
+
+QString Client::downloadMap()
+{
+    QJsonObject json = QJsonDocument::fromJson(m_socket->readAll()).object();
+
+    qDebug()<<json;
+    return json.value("addition").toString();
+}
+
+void Client::saveMap(QStringList rawMap)
+{
     for (QString row : rawMap) {
         QVector<char> vectorRow;
         for (QChar item : row) {
@@ -55,8 +65,8 @@ void Client::readyRead()
         }
         m_map.push_back(vectorRow);
     }
-    renderMap();
 }
+
 
 void Client::renderMap()
 {
