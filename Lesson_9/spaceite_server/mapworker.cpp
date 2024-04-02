@@ -25,11 +25,6 @@ QString MapWorker::getMapString()
     return responce;
 }
 
-QString MapWorker::getBasicPlayerPosition()
-{
-
-}
-
 bool MapWorker::loadMap()
 {
     m_mapData.clear();

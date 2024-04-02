@@ -13,7 +13,7 @@ public:
     explicit MapWorker(QObject *parent = nullptr);
     QVector<QVector<char>> getMap() { return m_mapData; }
     QString getMapString();
-    QString getBasicPlayerPosition();
+    QString getBasicPlayerPosition() { return m_defaultPlayerPostion;};
 
 signals:
     void mapLoadingError();
