@@ -25,15 +25,16 @@ bool NetWorker::start(int port)
     return ok;
 }
 
-void NetWorker::sendToPlayer(QByteArray id, Request request)
+void NetWorker::sendToPlayer(QByteArray id, NetworkParser::Request request)
 {
     QJsonObject json {
-                     {"action", actionToString(request.action)},
-        {"direction", directionToString(request.direction)},
+                     {"action", NetworkParser::actionToString(request.action)},
+        {"direction", NetworkParser::directionToString(request.direction)},
         {"addition", request.additionalInfo}
     };
     QJsonDocument jDoc { json };
     m_clients[id]->write(jDoc.toJson());
+    m_clients[id]->flush();
 }
 
 void NetWorker::sendToAll(QByteArray data)
@@ -46,7 +47,7 @@ void NetWorker::sendToAll(QByteArray data)
 void NetWorker::onPlayerCommand()
 {
     QTcpSocket *client = m_server->nextPendingConnection();
-    Request request = parseRequest(client->readAll());
+    NetworkParser::Request request = NetworkParser::parseRequest(client->readAll());
     emit playerCommand(request);
 }
 
@@ -73,55 +74,5 @@ void NetWorker::onPlayerDisconnected()
             emit playerDisconnected(id);
             m_clients.remove(id);
         }
-    }
-}
-
-NetWorker::Request NetWorker::parseRequest(QByteArray data)
-{
-    NetWorker::Request request;
-
-    QJsonObject json = QJsonDocument::fromJson(data).object();
-    request.action = parseAction(json.value("action").toString());
-    request.direction = parseDirection(json.value("direction").toString());
-    request.additionalInfo = json.value("addition").toString();
-    return request;
-}
-
-NetWorker::Action NetWorker::parseAction(QString data)
-{
-    if (data == "move") return Action::move;
-    if (data == "pick") return Action::pick;
-    if (data == "put") return Action::put;
-    return Action::noaction;
-}
-
-NetWorker::Direction NetWorker::parseDirection(QString data)
-{
-    if (data == "up") return Direction::up;
-    if (data == "down") return Direction::down;
-    if (data == "left") return Direction::left;
-    if (data == "right") return Direction::right;
-    return Direction::nodirection;
-}
-
-QString NetWorker::actionToString(Action data)
-{
-    switch (data) {
-    case Action::move: return "move"; break;
-    case Action::map: return "map"; break;
-    case Action::pick: return "pick"; break;
-    case Action::put: return "put"; break;
-    default: return "";
-    }
-}
-
-QString NetWorker::directionToString(Direction data)
-{
-    switch (data) {
-    case Direction::up: return "up"; break;
-    case Direction::down: return "down"; break;
-    case Direction::left: return "left"; break;
-    case Direction::right: return "right"; break;
-    default: return "";
     }
 }

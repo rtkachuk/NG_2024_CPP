@@ -2,12 +2,13 @@
 #define CLIENT_H
 
 #include <QMainWindow>
-#include <QTcpSocket>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QDebug>
+
+#include "networker.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,19 +30,22 @@ public:
     };
 
 private slots:
-    void onConnectClicked();
     void connectedToHost();
-    void readyRead();
-    QString downloadMap();
-    void saveMap(QStringList rawMap);
+    void onConnectClicked();
     void renderMap();
+    void assignId(QString id) { m_id = id; };
+    void movePlayer(QString playerInfo);
 
 private:
     QJsonObject jsonDownloaded;
     QPixmap getImage(char element);
-    QTcpSocket *m_socket;
-    QVector<QVector<char>> m_map;
+
     QGraphicsScene *m_scene;
     Ui::Client *ui;
+
+    Networker *m_networker;
+    QString m_id;
+
+    QMap<QString, QGraphicsPixmapItem *> m_players;
 };
 #endif // CLIENT_H

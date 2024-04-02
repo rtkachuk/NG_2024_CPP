@@ -15,11 +15,33 @@ Servak::Servak(QObject *parent)
 
 void Servak::newClientArrived(QByteArray id)
 {
-    NetWorker::Request request;
+    manageNewPlayer(id);
+
+}
+
+void Servak::manageNewPlayer(QByteArray id)
+{
+    NetworkParser::Request request;
     request.uuid = "";
-    request.action = NetWorker::map;
-    request.direction = NetWorker::nodirection;
+    request.action = NetworkParser::map;
+    request.direction = NetworkParser::nodirection;
     request.additionalInfo = m_mapworker->getMapString();
 
     m_networker->sendToPlayer(id, request);
+
+    request.uuid = "";
+    request.action = NetworkParser::assignId;
+    request.direction = NetworkParser::nodirection;
+    request.additionalInfo = QString::fromLocal8Bit(id);
+
+    m_networker->sendToPlayer(id, request);
+
+    request.uuid = "";
+    request.action = NetworkParser::move;
+    request.direction = NetworkParser::nodirection;
+    request.additionalInfo = id + "," + m_mapworker->getBasicPlayerPosition();
+
+    m_networker->sendToPlayer(id, request);
+
+    m_players.append(new Player(this, QString::fromLocal8Bit(id)));
 }

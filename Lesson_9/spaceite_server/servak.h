@@ -5,6 +5,7 @@
 #include "networker.h"
 #include "mapworker.h"
 #include "logger.h"
+#include "player.h"
 
 class Servak : public QObject
 {
@@ -22,6 +23,9 @@ private:
 
     NetWorker *m_networker;
     MapWorker *m_mapworker;
+
+    void manageNewPlayer(QByteArray id);
+    QVector<Player*> m_players;
 };
 
 #endif // SERVAK_H

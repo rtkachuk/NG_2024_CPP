@@ -4,10 +4,13 @@ MapWorker::MapWorker(QObject *parent)
     : QObject{parent}
 {
     m_logger = new Logger(this, "MAP", true);
+    m_defaultPlayerPostion = "0,0";
 
     if (loadMap() == false) {
         emit mapLoadingError();
     }
+
+    loadDefaultPlayerPosition();
 }
 
 QString MapWorker::getMapString()
@@ -20,6 +23,11 @@ QString MapWorker::getMapString()
         responce += ",";
     }
     return responce;
+}
+
+QString MapWorker::getBasicPlayerPosition()
+{
+
 }
 
 bool MapWorker::loadMap()
@@ -41,5 +49,18 @@ bool MapWorker::loadMap()
         return true;
     }
     m_logger->log(mapFile.errorString());
+    return false;
+}
+
+bool MapWorker::loadDefaultPlayerPosition()
+{
+    QFile posFile(":/Resources/misc/playerPos.txt");
+    if (posFile.open(QIODevice::ReadOnly)) {
+        QList<QByteArray> rows = posFile.readAll().split('\n');
+        m_defaultPlayerPostion = rows[0] + "," + rows[1];
+        m_logger->log("Loaded default player position: " + m_defaultPlayerPostion);
+        return true;
+    }
+    m_logger->log(posFile.errorString());
     return false;
 }
