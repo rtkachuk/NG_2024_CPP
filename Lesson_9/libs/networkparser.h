@@ -15,7 +15,8 @@ public:
         pick,
         put,
         map,
-        assignId
+        assignId,
+        pos
     };
 
     enum Direction {

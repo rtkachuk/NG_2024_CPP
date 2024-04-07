@@ -25,6 +25,20 @@ QString MapWorker::getMapString()
     return responce;
 }
 
+Position MapWorker::getBasicPlayerPosition()
+{
+    QStringList positionxy = m_defaultPlayerPostion.split(',');
+    Position pos;
+    pos.x = positionxy[0].toInt();
+    pos.y = positionxy[1].toInt();
+    return pos;
+}
+
+bool MapWorker::isPositionSteppable(Position pos)
+{
+    return m_mapData[pos.y][pos.x] == '.';
+}
+
 bool MapWorker::loadMap()
 {
     m_mapData.clear();

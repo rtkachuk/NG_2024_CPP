@@ -13,6 +13,7 @@ public:
     explicit Networker(QObject *parent = nullptr);
     void connectToHost(QString ip, int port);
     QVector<QVector<char>> *getMap() { return &m_map; }
+    void send(NetworkParser::Request request);
 
 private slots:
     void connectedToHost();

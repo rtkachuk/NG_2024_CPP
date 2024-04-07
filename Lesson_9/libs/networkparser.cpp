@@ -17,6 +17,8 @@ NetworkParser::Action NetworkParser::parseAction(QString data)
     if (data == "pick") return Action::pick;
     if (data == "put") return Action::put;
     if (data == "map") return Action::map;
+    if (data == "assignid") return Action::assignId;
+    if (data == "pos") return Action::pos;
     return Action::noaction;
 }
 
@@ -32,6 +34,8 @@ NetworkParser::Direction NetworkParser::parseDirection(QString data)
 QString NetworkParser::actionToString(Action data)
 {
     switch (data) {
+    case Action::assignId: return "assignid"; break;
+    case Action::pos: return "pos"; break;
     case Action::move: return "move"; break;
     case Action::map: return "map"; break;
     case Action::pick: return "pick"; break;

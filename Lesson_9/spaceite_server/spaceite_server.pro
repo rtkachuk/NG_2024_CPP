@@ -21,6 +21,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    ../libs/Position.h \
     ../libs/networkparser.h \
     logger.h \
     mapworker.h \

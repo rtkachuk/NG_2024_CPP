@@ -7,6 +7,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QDebug>
+#include <QKeyEvent>
 
 #include "networker.h"
 
@@ -33,8 +34,13 @@ private slots:
     void connectedToHost();
     void onConnectClicked();
     void renderMap();
-    void assignId(QString id) { m_id = id; };
-    void movePlayer(QString playerInfo);
+    void assignId(QString id);
+    void updatePlayerPos(QString playerInfo);
+
+    void processPlayerMove(NetworkParser::Direction direction);
+
+protected:
+    virtual void keyPressEvent(QKeyEvent *key);
 
 private:
     QJsonObject jsonDownloaded;

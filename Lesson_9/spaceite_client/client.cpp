@@ -19,7 +19,7 @@ Client::Client(QWidget *parent)
     connect(m_networker, &Networker::connected, this, &Client::connectedToHost);
     connect(m_networker, &Networker::mapAvailable, this, &Client::renderMap);
     connect(m_networker, &Networker::idAvailable, this, &Client::assignId);
-    connect (m_networker, &Networker::movePlayer, this, &Client::movePlayer);
+    connect(m_networker, &Networker::movePlayer, this, &Client::updatePlayerPos);
 
     connect (ui->b_connect, &QPushButton::clicked, this, &Client::onConnectClicked);
 }
@@ -57,25 +57,59 @@ void Client::renderMap()
     m_scene->update();
 }
 
-void Client::movePlayer(QString playerInfo)
+void Client::assignId(QString id)
+{
+    qDebug() << "ID Assigned: " << id;
+    m_id = id;
+}
+
+void Client::updatePlayerPos(QString playerInfo)
 {
     QStringList playerData = playerInfo.split(",");
 
+    qDebug() << "Moving player";
     QString id = playerData[0];
     int x = playerData[1].toInt();
     int y = playerData[2].toInt();
     QGraphicsPixmapItem *item = nullptr;
 
     if (m_players.contains(id)) {
-        QGraphicsPixmapItem *item = m_players[id];
+        item = m_players[id];
     } else {
-        item = m_scene->addPixmap(QPixmap(":/Resources/images/player.png"));
+        item = m_scene->addPixmap(QPixmap(":/Resources/images/player/player.png"));
         m_players[id] = item;
     }
-    m_scene->update();
+
+    qDebug() << QString("POS: %1,%2; SCENE: %3,%4").arg(x).arg(y).arg(40*x).arg(40*y);
 
     item->setPos(40 * x, 40 * y);
+    m_scene->update();
 
+}
+
+void Client::processPlayerMove(NetworkParser::Direction direction)
+{
+    NetworkParser::Request request;
+
+    qDebug() << "MOVE";
+    request.uuid = m_id.toLocal8Bit();
+    request.direction = direction;
+    request.action = NetworkParser::move;
+    request.additionalInfo = "";
+
+    qDebug() << "UUID: " << request.uuid;
+
+    m_networker->send(request);
+}
+
+void Client::keyPressEvent(QKeyEvent *key)
+{
+    switch (key->key()) {
+    case Qt::Key_W: processPlayerMove(NetworkParser::up); break;
+    case Qt::Key_S: processPlayerMove(NetworkParser::down); break;
+    case Qt::Key_A: processPlayerMove(NetworkParser::left); break;
+    case Qt::Key_D: processPlayerMove(NetworkParser::right); break;
+    }
 }
 
 QPixmap Client::getImage(char element)

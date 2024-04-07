@@ -15,6 +15,7 @@ SOURCES += \
     networker.cpp
 
 HEADERS += \
+    ../libs/Position.h \
     ../libs/networkparser.h \
     client.h \
     networker.h

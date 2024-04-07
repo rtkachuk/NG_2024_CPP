@@ -15,6 +15,13 @@ public:
 
 private slots:
     void newClientArrived(QByteArray id);
+    void onPlayerCommand(NetworkParser::Request req);
+    void processPlayerMove(QByteArray id, NetworkParser::Direction direction);
+    NetworkParser::Request prepareRequest(QByteArray uuid,
+                        NetworkParser::Action action,
+                        NetworkParser::Direction direction,
+                        QString additionalInfo);
+    void onPlayerDisconnect(QByteArray id);
 
 signals:
 
@@ -25,7 +32,7 @@ private:
     MapWorker *m_mapworker;
 
     void manageNewPlayer(QByteArray id);
-    QVector<Player*> m_players;
+    QMap<QByteArray, Player*> m_players;
 };
 
 #endif // SERVAK_H

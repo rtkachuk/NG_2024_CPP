@@ -21,7 +21,7 @@ public:
 
 public slots:
     void sendToPlayer(QByteArray id, NetworkParser::Request request);
-    void sendToAll(QByteArray data);
+    void sendToAll(NetworkParser::Request request);
 
 private slots:
     void onPlayerCommand();

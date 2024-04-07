@@ -5,6 +5,7 @@
 #include <QFile>
 
 #include "logger.h"
+#include "../libs/Position.h"
 
 class MapWorker : public QObject
 {
@@ -13,7 +14,10 @@ public:
     explicit MapWorker(QObject *parent = nullptr);
     QVector<QVector<char>> getMap() { return m_mapData; }
     QString getMapString();
-    QString getBasicPlayerPosition() { return m_defaultPlayerPostion;};
+    QString getBasicPlayerPositionString() { return m_defaultPlayerPostion;};
+    Position getBasicPlayerPosition();
+    bool isPositionSteppable(Position pos);
+
 
 signals:
     void mapLoadingError();
